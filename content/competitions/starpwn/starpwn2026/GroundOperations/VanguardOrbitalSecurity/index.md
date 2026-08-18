@@ -47,8 +47,8 @@ Puis en fouillant un peu on trouve deux pages intéressantes :
 ![Login](images/login_gitea.png)
 
 La première page nous permet de leak deux users :
-- builddev
-- admin
+- `builddev`
+- `admin`
 
 et la deuxième page nous permettra de nous connecter dès lors que l'on aura récupéré des creds valide.
 
@@ -171,7 +171,7 @@ Et en affichant les variables d'environnement :
 
 ![env](images/env.png)
 
-Voilà pourquoi j'ai utilisé l'expressions "bien plus rapidemment".
+Voilà pourquoi j'ai utilisé l'expression "bien plus rapidemment".
 
 
 
