@@ -2,7 +2,7 @@ disabled = false
 languageCode = "fr"
 languageName = "French"
 weight = 1
-title = "secunit"
+title = "My Cyber Blog"
 
 [params]
   displayName = "FR"
@@ -17,10 +17,10 @@ title = "secunit"
  [params.author]
    name = "secunit"
    email = "borderhat@outlook.com"
-   image = "img/blowfish_logo.png"
+   image = "img/garyking.jpeg"
    imageQuality = 96
-   headline = "In Progress.."
-   bio = "The best defense is the attack"
+   headline = "Willkommen, Bienvenue, Welcome!"
+   bio = ""
    links = [
      { email = "mailto:borderhat@outlook.com" },
 #     { link = "https://link-to-some-website.com/" },
