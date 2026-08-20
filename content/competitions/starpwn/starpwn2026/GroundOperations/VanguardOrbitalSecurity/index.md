@@ -69,7 +69,7 @@ Faisons comme si de rien n'était.
 En fouillant dans les fichiers présent dans le répertoire courant. On trouve des creds du user `builddev` :
 
 
-![creds](images/files_shell_gitea_censored.png)
+![creds](images/files_shell_gitea_uncensored.png)
 
 Nous en profitons directement pour se connecter à la plateforme Gitea
 
@@ -154,7 +154,7 @@ On lance la pipeline toujours grâce à la PR.
 
 On se rend sur le terminal :
 
-![flag](images/flag.png)
+![flag](images/flag_uncensored.png)
 
 Et bingo ! 
 
@@ -169,7 +169,7 @@ Ainsi partant de la première étape avec le terminal
 
 Et en affichant les variables d'environnement :
 
-![env](images/env.png)
+![env](images/env_uncensored.png)
 
 Voilà pourquoi j'ai utilisé l'expression "bien plus rapidemment".
 
