@@ -11,7 +11,7 @@ draft = false
 
 #### STARPWN c'est quoi ?
 
-La compétition STARPWN est une compétition organisé par Aerospace Village.
+L'évenement STARPWN est une compétition organisé par Aerospace Village.
 
 Aerospace Village est une initiative communautaire à but non lucratif dédiée à la cybersécurité des secteurs de l'aviation et du spatial.
 
