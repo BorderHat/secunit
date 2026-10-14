@@ -1,7 +1,7 @@
 +++
 date = '2026-08-17T15:20:03+02:00'
 draft = false
-title = 'Compétition'
+title = 'Compétitions'
 +++
 
 ---
