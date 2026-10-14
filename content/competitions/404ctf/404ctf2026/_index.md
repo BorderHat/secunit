@@ -1,12 +1,12 @@
 +++
 date = '2026-08-20T08:53:19+02:00'
 draft = true
-title = '404CTF2026'
+title = '404CTF 2026'
 
 [menus.main]
-  name = "404CTF2026"
+  name = "404CTF 2026"
   weight = 30
-  parent = "Compétitions"
+  parent = "404CTF"
 +++
 
 #### 404CTF c'est quoi ?
