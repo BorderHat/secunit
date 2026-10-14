@@ -1,5 +1,5 @@
 +++
-title = "STARPWN2026"
+title = "STARPWN 2026"
 date = 2026-08-17T14:42:11+02:00
 draft = false
 
