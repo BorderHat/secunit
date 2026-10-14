@@ -1,12 +1,12 @@
 +++
-title = "STARPWN2026"
+title = "STARPWN 2026"
 date = 2026-08-17T14:42:11+02:00
 draft = false
 
 [menus.main]
   name = "STARPWN2026"
-  weight = 30
-  parent = "Compétitions"
+  weight = 40
+  parent = "STARPWN"
 +++
 
 #### STARPWN c'est quoi ?
