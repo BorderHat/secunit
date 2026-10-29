@@ -36,11 +36,11 @@ https://starpwn-112a18b481da-bad-gitea-0-0.chals.io/
 
 #### Résolution
 
-En déployant l'application et en se rendant sur l'url, voici ce que l'on a :
+En déployant l'application et en se rendant sur l'URL, voici ce que l'on obtient :
 
 ![Home](images/home_gitea.png)
 
-Puis en fouillant un peu on trouve deux pages intéressantes :
+Puis, en fouillant un peu, on trouve deux pages intéressantes :
 
 ![Users](images/users_gitea.png)
 
@@ -50,103 +50,98 @@ La première page nous permet de leak deux users :
 - `builddev`
 - `admin`
 
-et la deuxième page nous permettra de nous connecter dès lors que l'on aura récupéré des creds valide.
+Et la deuxième page nous permettra de nous connecter dès lors que l'on aura récupéré des creds valides.
 
+Pour le moment, intéressons-nous au terminal disponible à `https://[challenge-url]/shell/`.
 
-Pour le moment, intéressons nous au terminal disponible à `https://[challenge-url]/shell/`
-
-Les premières informations sont les suivantes:
+Les premières informations sont les suivantes :
 
 ![shell](images/shell_gitea.png)
 
-
-En refaisant le challenge je me suis rendu compte qu'il était possible de récupérer le flag bien plus rapidemment. Peu importe si cela était fait exprès par les créateurs du challenge, le hacking c'est aussi contourner les chemins "offciels". 
+En refaisant le challenge, je me suis rendu compte qu'il était possible de récupérer le flag bien plus rapidement. Peu importe si cela était fait exprès par les créateurs du challenge, le hacking, c'est aussi contourner les chemins "officiels".
 
 La méthode plus rapide sera décrite dans la section `Raccourci`.
 
 Faisons comme si de rien n'était.
 
-En fouillant dans les fichiers présent dans le répertoire courant. On trouve des creds du user `builddev` :
-
+En fouillant dans les fichiers présents dans le répertoire courant, on trouve des creds du user `builddev` :
 
 ![creds](images/files_shell_gitea_uncensored.png)
 
-Nous en profitons directement pour se connecter à la plateforme Gitea
+Nous en profitons directement pour nous connecter à la plateforme Gitea.
 
-Immédiatement, nous voyons un repository nommé `build-service`
+Immédiatement, nous voyons un repository nommé `build-service`.
 
 ![repo](images/build_service_gitea.png)
 
 ![source_code](images/files_repository_gitea.png)
 
-Les fichiers `app.py`, `Makefile` et `package-release.sh` ne contiennet rien d'intéressant. Le dossier `scripts` non plus. 
+Les fichiers `app.py`, `Makefile` et `package-release.sh` ne contiennent rien d'intéressant. Le dossier `scripts` non plus.
 
-Il ne nous reste plus que le dossier `.gitea/workflow` qui contient le fichier principale de la pipeline CI/CD.
+Il ne nous reste plus que le dossier `.gitea/workflow`, qui contient le fichier principal de la pipeline CI/CD.
 
 ![pipeline](images/release_file_gitea.png)
 
-Immédiatement on peut remarquer la variable `SIGNING_KEY` qui charge le secret `PROD_SIGNING_KEY` qui est la clé qui nous interesse.
+Immédiatement, on peut remarquer la variable `SIGNING_KEY`, qui charge le secret `PROD_SIGNING_KEY`, qui est la clé qui nous intéresse.
 
 Pour comprendre ce que fait la pipeline, commençons par le bloc `on`.
 
-Le bloc `on` est le bloc dan lequel on retrouve les conditions pour que la pipeline ce déclenche. Ici, elle se déclenche sous une des deux conditions suivantes:
+Le bloc `on` est le bloc dans lequel on retrouve les conditions pour que la pipeline se déclenche. Ici, elle se déclenche sous l'une des deux conditions suivantes :
 
-un `push` sur n'importe quelle branche (caractérisé par `"**"` sous le cloc `branches`) ou bien une `pull_request` (pas de condition supplémentaire).
+Un `push` sur n'importe quelle branche (caractérisé par `"**"` sous le bloc `branches`) ou bien une `pull_request` (pas de condition supplémentaire).
 
-Ensuite le bloc `jobs` décrit les actions qui vont être réalisé si la pipeline se déclenche. On voit donc que des variables sont chargés puis une suite de commande `git` ainsi qu'un `make` et l'éxécution d'un script shell (on s'en fout un peu).
+Ensuite, le bloc `jobs` décrit les actions qui vont être réalisées si la pipeline se déclenche. On voit donc que des variables sont chargées, puis une suite de commandes `git`, ainsi qu'un `make` et l'exécution d'un script shell (on s'en fout un peu).
 
-Etant donné qu'on sait qu'elle élément nous intéresse (`SIGNING_KEY`) il nous reste plus qu'a ruser pour récupérer le contenu.
+Étant donné qu'on sait quel élément nous intéresse (`SIGNING_KEY`), il ne nous reste plus qu'à ruser pour récupérer son contenu.
 
-Première idée: On va simplement afficher à l'aide de la commande `echo` la valeur de cette variable. Ainsi lors de l'éxécution de la pipeline, nous serons en mesure de voir son contenu dans les logs de la pipeline.
+Première idée : on va simplement afficher, à l'aide de la commande `echo`, la valeur de cette variable. Ainsi, lors de l'exécution de la pipeline, nous serons en mesure de voir son contenu dans les logs de la pipeline.
 
 C'est parti !
 
-1. On modifie la pipeline
+1. On modifie la pipeline.
 
 ![modify](images/modify_release_gitea.png)
 
-2. On crée une branche (afin de faire une PR ensuite et déclencher la pipeline)
+2. On crée une branche (afin de faire une PR ensuite et de déclencher la pipeline).
 
 ![Create branch](images/create_branch_gitea.png)
 
-3. Puis on crée une PR
+3. Puis on crée une PR.
 
 ![pr](images/pr_gitea.png)
 
 ![create pr](images/create_pr.png)
 
-4. On check les logs de la pipeline
+4. On check les logs de la pipeline.
 
 ![run pipeline](images/run_pipeline.png)
 
 ![log pipeline](images/log_pipeline.png)
 
-Malheuresement, l'output nous donne `***`. 
+Malheureusement, l'output nous donne `***`.
 
-En faite cela est tout à fait normal, la pipeline n'affiche pas les variables qui proviennent du contexte `secrets.*` De la même manière il n'est pas possible d'afficher un fichier avec comme contenu la variable d'environnement. Il va donc falloir ruser un peu.
+En fait, cela est tout à fait normal : la pipeline masque les variables qui proviennent du contexte `secrets.*`. De la même manière, il n'est pas possible d'afficher directement un fichier contenant la variable d'environnement dans les logs. Il va donc falloir ruser un peu.
 
-Je suis retourné sur le `/shell` pour intéragir avec le système et récupérer d'autres informations utiles.
+Je suis retourné sur le `/shell` pour interagir avec le système et récupérer d'autres informations utiles.
 
-Première chose que je voulais faire c'était énumérer les users sur la machine.
+La première chose que je voulais faire, c'était énumérer les users sur la machine.
 
 ![users](images/enum_users.png)
 
-On trouve le user `git` (moyennement interessant tant qu'on a pas le mdp). 
+On trouve le user `git` (moyennement intéressant tant qu'on n'a pas le mdp).
 
-On va tester la startégie suivante : 
+On va tester la stratégie suivante :
 
+- Créer un fichier `.txt` contenant la variable d'environnement.
+- Placer ce fichier dans le répertoire `/home/player`, puis lire le fichier depuis le terminal.
 
-- Créer un fichier `.txt` avec en contenu la variable d'environnement.
-- Placer ce fichier dans le répertoire `/home/player` puis lire le fichier depuis le terminal.
-
-Allons-y
+Allons-y !
 
 ![file with key](images/create_flag_player.png)
 
 ![create branch success](images/create_branch_success.png)
 
-
-On lance la pipeline toujours grâce à la PR.
+On lance la pipeline, toujours grâce à la PR.
 
 ![pr success](images/success_pr.png)
 
@@ -156,14 +151,13 @@ On se rend sur le terminal :
 
 ![flag](images/flag_uncensored.png)
 
-Et bingo ! 
+Et bingo !
 
-On remarque que l'on a plusieurs fois le flag, c'est tout simplement parce que la pipeline s'est éxécuté plusieurs fois.
-
+On remarque que l'on a plusieurs fois le flag, c'est tout simplement parce que la pipeline s'est exécutée plusieurs fois.
 
 #### Raccourci
 
-Ainsi partant de la première étape avec le terminal
+Ainsi, en repartant de la première étape avec le terminal :
 
 ![shell](images/shell_gitea.png)
 
@@ -171,7 +165,7 @@ Et en affichant les variables d'environnement :
 
 ![env](images/env_uncensored.png)
 
-Voilà pourquoi j'ai utilisé l'expression "bien plus rapidemment".
+Voilà pourquoi j'ai utilisé l'expression "bien plus rapidement".
 
 
 

@@ -19,37 +19,37 @@ Titan has tasked you to infiltrate YeetSat and collect information about their m
 
 #### Résolution
 
-Après avoir déployé l'application, voici ce qur quoi on arrive :
+Après avoir déployé l'application, voici ce sur quoi on arrive :
 
 ![UI](images/web_ui.png)
 
-Directement, on télécharge la `Golden Image`, puis on unzip le tout:
+Directement, on télécharge la `Golden Image`, puis on unzip le tout :
 
 ![unzip](images/unzip_golden_image.png)
 
-Première chose que je regarde, le fichier `README.md`. Celui nous permet de dump des infos intéressantes :
+Première chose que je regarde : le fichier `README.md`. Celui-ci nous permet de récupérer des infos intéressantes :
 
 ![opt](images/location_opt.png)
 
-Ainsi on comprend que les fichiers contenu dans le zip `Golden Image` sont uploadés dans `/opt` qui est le directory dans lequel se trouve **flag.txt**.
+Ainsi, on comprend que les fichiers contenus dans le zip `Golden Image` sont uploadés dans `/opt`, qui est le répertoire dans lequel se trouve **flag.txt**.
 
 ![status](images/status_readme.png)
 
 ![EPS](images/EPS.png)
 
-Deuxièmement, on comprend que le script `status-generator.py` produit message de status qui sont des entiers entre 0 et 3.
+Deuxièmement, on comprend que le script `status-generator.py` produit des messages de statut qui sont des entiers compris entre 0 et 3.
 
-On comprend également que sous certaines conditions, la `Golden Image` est automatiquement restorée.
+On comprend également que, sous certaines conditions, la `Golden Image` est automatiquement restaurée.
 
-Une de ces condtions concerne la valeur affecté à l'EPS (Electrical Power System).
+L'une de ces conditions concerne la valeur affectée à l'EPS (Electrical Power System).
 
 Continuons en regardant le code de `status-generator.py` :
 
 ![status-generator](images/status-generator.png)
 
-On remarque directement les numéros des différents messages de status.
+On remarque directement les numéros des différents messages de statut.
 
-Ce qu'on va faire tout simplement c'est remplacer les fichiers `.txt` par `flag.txt` (normalment pas besoin du chemin absolu car tout est dans `/opt`).
+Ce qu'on va faire, tout simplement, c'est remplacer les fichiers `.txt` par `flag.txt` (normalement, pas besoin du chemin absolu, car tout est dans `/opt`).
 
 Ce qui nous donne :
 
@@ -59,23 +59,23 @@ On sauvegarde les changements et on zip le tout.
 
 ![zip](images/zip_golden_image.png)
 
-Ensuite on upload la `Golden Image` sur l'application.
+Ensuite, on upload la `Golden Image` sur l'application.
 
 ![upload](images/upload_golden_image.png)
 
-Pour que l'application restaure la `Golden Image`, on va modifier la valeur de `EPS` comme expliqué précedemment.
+Pour que l'application restaure la `Golden Image`, on va modifier la valeur de `EPS`, comme expliqué précédemment.
 
 ![modify_eps](images/modify_EPS.png)
 
-Le maximun est noté à **25**. Essayons avec **100**
+Le maximum est fixé à **25**. Essayons avec **100**.
 
 ![set_eps](images/set_EPS.png)
 
-Suite à la modification de `EPS` et comme attendu, la `Golden Image` est bien restauré.
+Suite à la modification de `EPS` et comme attendu, la `Golden Image` est bien restaurée.
 
 ![golden_image_restaured](images/golden_image_restore.png)
 
-Il nous reste plus qu'a récupérer le flag :
+Il ne nous reste plus qu'à récupérer le flag :
 
 ![flag](images/flag.png)
 

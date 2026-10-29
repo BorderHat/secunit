@@ -5,5 +5,5 @@ title = 'Compétitions'
 +++
 
 ---
-Dans cette sections vous pourrez retrouver des write-up de challenges que j'ai résolu dans le cadre de compétitions officiels
+Dans cette sections vous pourrez retrouver des write-ups de challenges que j'ai résolu dans le cadre de compétitions officiels
 
