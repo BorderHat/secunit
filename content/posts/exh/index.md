@@ -1,6 +1,6 @@
 +++
 date = '2026-10-30T09:25:00+01:00'
-draft = true
+draft = false
 title = 'Exegol-history'
 
 [menus.main]
